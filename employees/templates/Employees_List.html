@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,600;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/HomePage.css">
-    <script defer src="../js/Home.js"></script>
-    <script defer src="../js/site_properties.js"></script>
-    <script defer src="../js/utility.js"></script>
-    <script defer src="../js/http_services.js"></script>
+    <link rel="stylesheet" href="{% static 'css/HomePage.css' %}">
+    <script defer src="{% static 'js/EmployeesList.js' %}"></script>
     <title>Employee Payroll Home</title>
 </head>
 <body>
     <header class="header-content header">
         <div class="logo-content">
-            <img src="../assets/images/logo.png" alt="" style="width:50.24px;height:46.57px;">
+            <img src="{% static 'assets/images/logo.png' %}" alt="" style="width:50.24px;height:46.57px;">
            <div>
               <span class="emp-text">EMPLOYEE</span><br>
               <span class="emp-text emp-payroll">PAYROLL</span>
@@ -25,12 +23,34 @@
     <div class="main-content">
         <div class="header-content">
             <div class="emp-detail-text">
-              Employee Details <div class="emp-count">10</div>
+              Employee Details <div class="emp-count">{{ employees|length }}</div>
             </div>
-            <a href="..\pages\EmployeePayrollForm.html" class="add-button">
-                <img src="../assets/icons/add-24px.svg" alt="">Add User</a>
+            <a href="/employees/add/" class="add-button">
+                <img src="{% static 'assets/icons/add-24px.svg' %}" alt="">Add User</a>
         </div>
-        <table id="table-display" class="table"></table>
+        <table id="table-display" class="table">
+            <tr><th></th><th>Name</th><th>Gender</th><th>Department</th><th>Salary</th><th>Start Date</th><th>Actions</th></tr>
+            {% for employee in employees %}
+            <tr>
+                <td>
+                    <img class="profile" alt="Profile Pic" src="{% static employee.profile_pic %}">
+                </td>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.gender }}</td>
+                <td>
+                    {% for department in employee.departments.all %}
+                    <div class='dept-label'>{{ department }}</div>
+                    {% endfor %}
+                </td>
+                <td>{{ employee.salary }}</td>
+                <td>{{ employee.start_date|date:"F j,Y" }}</td>
+                <td>
+                    <a href="/employees/delete/{{ employee.id }}/"><img alt="delete" src="{% static '/assets/icons/delete-black-18dp.svg' %}"></a>
+                    <a href="/employees/edit/{{ employee.id }}/"><img alt="edit" src="{% static '/assets/icons/create-black-18dp.svg' %}"></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>
 </body>
