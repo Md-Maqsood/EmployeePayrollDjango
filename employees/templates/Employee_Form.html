@@ -6,44 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="{% static 'css/PayrollForm.css' %}" type="text/css" rel="stylesheet">
-    <script defer src="{% static 'js/EmployeePayrollForm.js' %}"></script>
+    <script src="{% static 'js/EmployeePayrollForm.js' %}" defer></script>
     <title>Employee Payroll Form</title>                                     
 </head>
 <body>
     <header class="header-content header">
-        <div class="logo-content">
-            <img src="{% static 'assets/images/logo.png' %}" alt="">
-            <div>
-                <span class="emp-text">EMPLOYEE</span><br>
-                <span class="emp-text emp-payroll">PAYROLL</span>
+        <a href="/employees/">
+            <div class="logo-content">
+                <img src="{% static 'assets/images/logo.png' %}" alt="" style="width:50.24px;height:46.57px;">
+                <div>
+                    <span class="emp-text">EMPLOYEE</span><br>
+                    <span class="emp-text emp-payroll">PAYROLL</span>
+                </div>
             </div>
-        </div>
+        </a>
     </header>
     <div class="form-content">
         <form class="form" action="" method="POST">
             <div class="form-head">Employee Payroll Form</div>
             <div class="row-content">
                 <label class="label text" for="name">Name</label>
-                <input class="input" type="text" id="name" name="name" placeholder="Your name.." required>
+                <input class="input" type="text" id="name" name="name" placeholder="Your name.." pattern='^[A-Z]{1}[a-zA-Z ]{2,}$' oninvalid="this.setCustomValidity('Name is Invalid')" oninput="this.setCustomValidity('')" {% if employee %}value="{{ employee.name }}"{% endif %} required>
                 <error-output class="text-error" for="text"></error-output>
             </div>
             <div class="row-content">
                 <label class="label text" for="profile_pic">Profile Image</label>
                 <div class="profile-radio-content">
                     <label>
-                        <input type="radio" id="profile1" name="profile_pic" value="assets/profile-images/Ellipse -3.png" required>
+                        <input type="radio" id="profile1" name="profile_pic" value="assets/profile-images/Ellipse -3.png" {% if employee %}{% ifequal "assets/profile-images/Ellipse -3.png" employee.profile_pic %}checked{% endifequal %}{% endif %} required>
                         <img class="profile" id="image1" src="{% static 'assets/profile-images/Ellipse -3.png' %}">
                     </label>
                     <label>
-                        <input type="radio" id="profile2" name="profile_pic" value="assets/profile-images/Ellipse -2.png" required>
+                        <input type="radio" id="profile2" name="profile_pic" value="assets/profile-images/Ellipse -2.png" {% if employee %}{% ifequal "assets/profile-images/Ellipse -2.png" employee.profile_pic %}checked{% endifequal %}{% endif %} required>
                         <img class="profile" id="image2" src="{% static 'assets/profile-images/Ellipse -2.png' %}">
                     </label>
                     <label>
-                        <input type="radio" id="profile3" name="profile_pic" value="assets/profile-images/Ellipse -5.png" required>
+                        <input type="radio" id="profile3" name="profile_pic" value="assets/profile-images/Ellipse -5.png" {% if employee %}{% ifequal "assets/profile-images/Ellipse -5.png" employee.profile_pic %}checked{% endifequal %}{% endif %} required>
                         <img class="profile" id="image3" src="{% static 'assets/profile-images/Ellipse -5.png' %}">
                     </label>
                     <label>
-                        <input type="radio" id="profile4" name="profile_pic" value="assets/profile-images/Ellipse -8.png" required>
+                        <input type="radio" id="profile4" name="profile_pic" value="assets/profile-images/Ellipse -8.png" {% if employee %}{% ifequal "assets/profile-images/Ellipse -8.png" employee.profile_pic %}checked{% endifequal %}{% endif %} required>
                         <img class="profile" id="image4" src="{% static 'assets/profile-images/Ellipse -8.png' %}">
                     </label>
                 </div>
@@ -51,42 +53,42 @@
             <div class="row-content">
                 <label class="label text" for="gender">Gender</label>
                 <div>
-                    <input type="radio" id="male" name="gender" value="Male">
+                    <input type="radio" id="male" name="gender" value="Male" {% if employee %}{% ifequal "Male" employee.gender %}checked{% endifequal %}{% endif %}>
                     <label class="text" for="male">Male</label>
-                    <input type="radio" id="female" name="gender" value="Female">
+                    <input type="radio" id="female" name="gender" value="Female" {% if employee %}{% ifequal "Female" employee.gender %}checked{% endifequal %}{% endif %}>
                     <label class="text" for="female">Female</label>
                 </div>
             </div>
             <div class="row-content">
                 <label class="label text" for="departments">Department</label>
                 <div>
-                    <input class="checkbox" type="checkbox" id="hr" name="departments" value="HR">
+                    <input class="checkbox" type="checkbox" id="hr" name="departments" value="HR" {% if employee %}{% for department in employee.departments.all %}{% ifequal "HR" department.department_name %}checked{% endifequal %}{% endfor %}{% endif %}>
                     <label class="text" for="hr">HR</label>
-                    <input class="checkbox" type="checkbox" id="sales" name="departments" value="Sales">
+                    <input class="checkbox" type="checkbox" id="sales" name="departments" value="Sales" {% if employee %}{% for department in employee.departments.all %}{% ifequal "Sales" department.department_name %}checked{% endifequal %}{% endfor %}{% endif %}>
                     <label class="text" for="sales">Sales</label>
-                    <input class="checkbox" type="checkbox" id="finance" name="departments" value="Finance">
+                    <input class="checkbox" type="checkbox" id="finance" name="departments" value="Finance" {% if employee %}{% for department in employee.departments.all %}{% ifequal "Finance" department.department_name %}checked{% endifequal %}{% endfor %}{% endif %}>
                     <label class="text" for="finance">Finance</label>
-                    <input class="checkbox" type="checkbox" id="engineer" name="departments" value="Engineer">
-                    <label class="text" for="engineer">Engineer</label>
-                    <input class="checkbox" type="checkbox" id="others" name="departments" value="Others">
+                    <input class="checkbox" type="checkbox" id="engineering" name="departments" value="Engineering" {% if employee %}{% for department in employee.departments.all %}{% ifequal "Engineering" department.department_name %}checked{% endifequal %}{% endfor %}{% endif %}>
+                    <label class="text" for="engineer">Engineering</label>
+                    <input class="checkbox" type="checkbox" id="others" name="departments" value="Others" {% if employee %}{% for department in employee.departments.all %}{% ifequal "Others" department.department_name %}checked{% endifequal %}{% endfor %}{% endif %}>
                     <label class="text" for="others">Others</label>
                 </div>
             </div>
             <div class="row-content">
                 <label class="label text" for="salary">Choose your salary: </label>
-                <input class="input" type="range" name="salary" id="salary" min="300000" max="500000" step="100" value="400000">
-                <output class="salary-output text" for="salary">400000</output>
+                <input class="input" type="range" name="salary" id="salary" min="300000" max="500000" step="100" {% if employee %}value="{{ employee.salary }}"{% else %}value="400000"{% endif %}>
+                <output class="salary-output text" for="salary">{% if employee %}{{ employee.salary }}{% else %}400000{% endif %}</output>
             </div>
             <div class="row-content">
                 <label class="label text" for="start_date">Start Date</label>
                 <div>
-                    <input type="date" name="start_date" id="start_date"/>
+                    <input type="date" name="start_date" id="start_date" min={{ minDate|date:"Y-m-d" }} max={{ maxDate|date:"Y-m-d" }} {% if employee %}value="{{ employee.start_date|date:"Y-m-d" }}"{% endif %}/>
                     <error-output class="date-error" for="startDate"></error-output>
                 </div>
             </div>
             <div class="row-content">
                 <label class="label text" for="note">Notes</label>
-                <textarea id="note" class="input" name="note" placeholder="" style="height: 100px;"></textarea>
+                <textarea id="note" class="input" name="note" placeholder="" style="height: 100px;">{% if employee %}{{ employee.note }}{% endif %}</textarea>
             </div>
             <div class="buttonParent">
                 <a href="/employees/" class="resetButton button cancelButton">Cancel</a>
