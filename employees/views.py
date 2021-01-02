@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from .models import Employee, Department
 from datetime import datetime, timedelta
-# Create your views here.
+
 def employeesList(request):
     employees=Employee.objects.all()
     return render(request,'Employees_List.html',{'employees':employees})
@@ -58,3 +58,8 @@ def editEmployee(request,pk):
         dateToday=datetime.now()
         dateMonthBefore=dateToday-timedelta(days=30)
         return render(request,'Employee_Form.html',{'minDate':dateMonthBefore.date(),'maxDate':dateToday.date(),'employee':employee})
+
+def removeEmployee(request,pk):
+    employee=Employee.objects.get(id=pk)
+    employee.delete()
+    return HttpResponseRedirect('/employees/')
