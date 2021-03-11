@@ -11,7 +11,7 @@ class Employee(models.Model):
     profile_pic=models.CharField(max_length=200)
     gender=models.CharField(max_length=6)
     departments=models.ManyToManyField(Department)
-    salary=models.IntegerField()
+    salary=models.PositiveIntegerField()
     start_date=models.DateField()
     note=models.TextField()
 
